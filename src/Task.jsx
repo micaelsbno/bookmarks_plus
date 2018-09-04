@@ -19,7 +19,7 @@ export default class Task extends React.Component {
           {...provided.dragHandleProps}
           innerRef={provided.innerRef}
         >
-          {this.props.task.content}
+          <a href={this.props.task.url}>{this.props.task.content}</a>
         </Container>
       )}
       </Draggable>

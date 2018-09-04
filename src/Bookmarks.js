@@ -31,7 +31,8 @@ export default class Bookmark extends React.Component{
     this.state.bookmarks.forEach( bookmark => {
       allBookmarks.tasks[bookmark.id] = {
         id: bookmark.id,
-        content: `<a href="${bookmark.url}">${bookmark.title}</a>`
+        content: bookmark.title,
+        url: bookmark.url
       }
     })
     this.setState({

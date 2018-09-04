@@ -1,17 +1,7 @@
-import React from 'react';
-import '@atlaskit/css-reset'
+import React from 'react'
 import { DragDropContext } from 'react-beautiful-dnd'
-import Column from './column'
 
-class Folder extends React.Component {
-
-  constructor(props){
-    super(props)
-    console.log(props)
-    this.state = props.folders; 
-  }
-
-  onDragEnd = result => {
+const onDragEnd = result => {
     const {destination, source, draggableId } = result
 
     if (!destination){
@@ -46,19 +36,4 @@ class Folder extends React.Component {
     this.setState(newState)
   }
 
-  render() {
-    return (
-      <DragDropContext onDragEnd={this.onDragEnd}>
-      {this.state.columnOrder.map(columnId => {
-        const column = this.state.columns[columnId]
-        const tasks = column.taskIds.map(taskId => this.state.tasks[taskId])
-
-        return <Column key={column.id} column={column} tasks={tasks} />
-      })}
-      </DragDropContext>
-    )
-  }
-}
-
-export default Folder
-
+  export default onDragEnd
