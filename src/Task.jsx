@@ -1,6 +1,7 @@
 import React from  'react'
 import styled from 'styled-components'
 import { Draggable } from 'react-beautiful-dnd'
+import axios from 'axios'
 
 const Container = styled.div`
   border: 1px solid lightgrey;
@@ -10,6 +11,19 @@ const Container = styled.div`
 `
 
 export default class Task extends React.Component {
+  
+  constructor(props){
+    super(props)
+  }
+
+  deleteBookmark = () => {
+    console.log(this.props.task.id)
+    axios.delete('http://localhost:2999/bookmarks/' + this.props.task.id, {})
+    .then( response => {
+      this.forceUpdate()
+    })
+  }
+
   render() {
     return (
       <Draggable draggableId={this.props.task.id} index={this.props.index}>
@@ -19,7 +33,14 @@ export default class Task extends React.Component {
           {...provided.dragHandleProps}
           innerRef={provided.innerRef}
         >
-          <a href={this.props.task.url}>{this.props.task.content}</a>
+          <div className='link__container'>
+            <a href={this.props.task.url}>{this.props.task.content}</a>
+            <div className="link__aside">
+              <i className="fas fa-times" onClick={this.deleteBookmark}></i>
+              <i className="fas fa-question"></i>
+              <i className="fas fa-check"></i>
+            </div>
+          </div>
         </Container>
       )}
       </Draggable>

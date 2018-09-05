@@ -23,7 +23,7 @@ export default class Bookmark extends React.Component{
       allBookmarks.columns[bookmark] = {
         id: bookmark,
         title: bookmark,
-        taskIds: this.state.bookmarks.filter( mark => mark.folder === bookmark ).map( mark => mark.id)
+        taskIds: this.state.bookmarks.sort((markA, markB) => markA.index - markB.index).filter( mark => mark.folder === bookmark ).map( mark => mark.id)
       }
     })
 

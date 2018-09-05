@@ -6,11 +6,9 @@ class Login extends React.Component{
   
   constructor(props){
     super(props)
-    this.userIsLoggedIn = this.userIsLoggedIn.bind(this)
     this.state = {
       email: '',
       password: '',
-      token: '',
       bookmarks: []
     }
   }
@@ -22,19 +20,12 @@ class Login extends React.Component{
     .then(
       (response)  => {
         if (!!response[0] != 'error') {
-          this.setState({
-            token: response.data[0],
-            bookmarks: response.data[1]
-          })
+          this.props.updateSession(response.data[0], response.data[1])
         }
       }    
     )
   }
   
-  userIsLoggedIn(){
-    return this.state.token === 'token'
-  }
-
 
   update = (event) => {
     const {name, value} = event.target
@@ -42,11 +33,6 @@ class Login extends React.Component{
   }
 
   render(){
-    if (this.userIsLoggedIn()) {
-      return (
-          <Bookmarks bookmarks={this.state.bookmarks}/>
-        )
-    } else {   
      return (
         <div>
           <h1>Login</h1>
@@ -58,7 +44,6 @@ class Login extends React.Component{
         </div>
       ) 
     }
-  }
 }
 
 export default Login
