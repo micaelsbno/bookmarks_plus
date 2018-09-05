@@ -10,7 +10,6 @@ export default class Bookmark extends React.Component{
 
   mountBookmarks = () => {
     let { bookmarks } = this.props
-    console.log('inside mount bookmarks')
     const allBookmarks = {tasks: {}, columnOrder: [], columns: {}}
 
     // this creates folders
@@ -35,7 +34,8 @@ export default class Bookmark extends React.Component{
       allBookmarks.tasks[bookmark.id] = {
         id: bookmark.id,
         content: bookmark.title,
-        url: bookmark.url
+        url: bookmark.url,
+        finished: bookmark.finished
       }
     })
     return allBookmarks

@@ -1,0 +1,9 @@
+.bookmarks {
+  background-color: #F7F7F7;
+}
+
+.bookmarks__title {
+  color: #B3B3B3;
+  font-size: 0.8em;
+  padding: 0 0 1.3em 2.8em;
+}
