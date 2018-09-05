@@ -19,14 +19,13 @@ class Login extends React.Component{
     axios.post('http://localhost:2999/sessions', { email, password })
     .then(
       (response)  => {
-        if (!!response[0] != 'error') {
+        if (response[0] != 'error') {
           this.props.updateSession(response.data[0], response.data[1])
         }
       }    
     )
   }
   
-
   update = (event) => {
     const {name, value} = event.target
     this.setState({[name]: value})

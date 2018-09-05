@@ -17,10 +17,9 @@ export default class Task extends React.Component {
   }
 
   deleteBookmark = () => {
-    console.log(this.props.task.id)
     axios.delete('http://localhost:2999/bookmarks/' + this.props.task.id, {})
     .then( response => {
-      this.forceUpdate()
+      this.props.updateSession(response.data[0], response.data[1])
     })
   }
 

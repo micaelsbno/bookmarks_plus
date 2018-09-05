@@ -4,51 +4,48 @@ import Folder from './Folder'
 export default class Bookmark extends React.Component{
   constructor(props){
     super(props)
-    this.state = {
-      bookmarks: props.bookmarks,
-      folders: {}
-    }
   }
- 
- mountBookmarks() {
-  const allBookmarks = {tasks: {}, columnOrder: [], columns: {}}
+  
+  // rerun mountBookmarks
 
-  // this creates folders
-  this.state.bookmarks.forEach( bookmark => {
-    !allBookmarks.columnOrder.includes(bookmark.folder) ? allBookmarks.columnOrder.push(bookmark.folder) : ''
-  })
+  mountBookmarks = () => {
+    let { bookmarks } = this.props
+    console.log('inside mount bookmarks')
+    const allBookmarks = {tasks: {}, columnOrder: [], columns: {}}
 
-  // this creates bookmarks
+    // this creates folders
+    bookmarks.forEach( bookmark => {
+      !allBookmarks.columnOrder.includes(bookmark.folder) ? allBookmarks.columnOrder.push(bookmark.folder) : ''
+    })
+
+    // this creates bookmarks
     allBookmarks.columnOrder.forEach( bookmark => {
       allBookmarks.columns[bookmark] = {
         id: bookmark,
         title: bookmark,
-        taskIds: this.state.bookmarks.sort((markA, markB) => markA.index - markB.index).filter( mark => mark.folder === bookmark ).map( mark => mark.id)
+        taskIds: bookmarks
+          .sort((markA, markB) => markA.index - markB.index)
+          .filter( mark => mark.folder === bookmark )
+          .map( mark => mark.id)
       }
     })
 
-  // this creates tasks 
-    this.state.bookmarks.forEach( bookmark => {
+    // this creates tasks
+    bookmarks.forEach( bookmark => {
       allBookmarks.tasks[bookmark.id] = {
         id: bookmark.id,
         content: bookmark.title,
         url: bookmark.url
       }
     })
-    this.setState({
-      folders: allBookmarks
-    })
- }
+    return allBookmarks
+  }
 
-  render(){
-    if (!!this.state.folders.columnOrder) {
+  render() {
     return (
       <div>
-        <Folder folders={this.state.folders} />
+        <Folder folders={this.mountBookmarks()} updateSession={this.props.updateSession} />
       </div>
-      )
-    } else {
-     return ( <div>{this.mountBookmarks()}</div> )
-    }
+    )
   }
 }

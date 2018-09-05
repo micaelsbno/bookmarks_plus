@@ -8,8 +8,6 @@ class Folder extends React.Component {
 
   constructor(props) {
     super(props)
-    console.log(props)
-    this.state = props.folders; 
   }
 
   onDragEnd = result => {
@@ -26,7 +24,7 @@ class Folder extends React.Component {
       return
     }
     
-    const column = this.state.columns[source.droppableId]
+    const column = this.props.folders.columns[source.droppableId]
     const newTaskIds = Array.from(column.taskIds)
     
     newTaskIds.splice(source.index, 1)
@@ -38,9 +36,9 @@ class Folder extends React.Component {
     }
 
     const newState = {
-      ...this.state,
+      ...this.props.folders,
       columns: {
-        ...this.state.columns,
+        ...this.props.folders.columns,
         [newColumn.id]: newColumn,
       }
     }
@@ -50,21 +48,21 @@ class Folder extends React.Component {
       .then(
         response => {
           console.log('success')
+          this.props.updateSession(response.data[0], response.data[1])
         })
     })
-
-
-    this.setState(newState)
+    
   }
 
   render() {
+    let { folders } = this.props
     return (
       <DragDropContext onDragEnd={this.onDragEnd}>
-      {this.state.columnOrder.map(columnId => {
-        const column = this.state.columns[columnId]
-        const tasks = column.taskIds.map(taskId => this.state.tasks[taskId])
+      {folders.columnOrder.map(columnId => {
+        const column = folders.columns[columnId]
+        const tasks = column.taskIds.map(taskId => folders.tasks[taskId])
 
-        return <Column key={column.id} column={column} tasks={tasks} />
+        return <Column key={column.id} column={column} tasks={tasks} updateSession={this.props.updateSession} />
       })}
       </DragDropContext>
     )
