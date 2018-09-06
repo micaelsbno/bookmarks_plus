@@ -1,6 +1,7 @@
 import React from 'react'
 import axios from 'axios'
 import './Login.css'
+import apiUrl from './apiUrl'
 
 class Login extends React.Component{
   
@@ -21,11 +22,11 @@ class Login extends React.Component{
   logInUser = (event) => {
     event.preventDefault()
     const {email, password} = this.state
-    axios.post('http://localhost:2999/sessions', { email, password })
+    axios.post(apiUrl + 'sessions', { email, password })
     .then(
       (response) => {
         if (response[0] !== 'error') {
-          this.props.updateSession(response.data[0], response.data[1], response.data[2])
+          this.props.updateSession(response.data[0], response.data[1], response.data[2], 'hidden', [])
           this.storeSession()
         }
       }    

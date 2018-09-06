@@ -30,12 +30,23 @@ h4 {
   transition: 0.3s all ease;
 }
 
+.new-folder__form {
+  margin: 1em;
+}
+
+.folder__selector {
+  padding: 0.5em;
+  margin: 0.5em;
+}
+
+.folder__selector:hover {
+  background-color: #F7F7F7
+}
+
 .show {
-  width: 100%;
   min-height: 100px;
   background-color: white;
   margin: 8px;
-  padding: 1em;
   transition: 0.3s all ease;
   overflow: hidden;
 }

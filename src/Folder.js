@@ -3,6 +3,7 @@ import '@atlaskit/css-reset'
 import { DragDropContext } from 'react-beautiful-dnd'
 import Column from './Column'
 import axios from 'axios'
+import apiUrl from './apiUrl'
 
 class Folder extends React.Component {
 
@@ -28,7 +29,7 @@ class Folder extends React.Component {
 
 
     newTaskIds.forEach( (markId, index) => {
-      axios.put('http://localhost:2999/bookmarks/' + markId, {markId, index, finished: this.props.folders.tasks[[markId]].finished})
+      axios.put(apiUrl + 'bookmarks/' + markId, {markId, index, finished: this.props.folders.tasks[[markId]].finished})
       .then(
         response => {
           this.props.updateSession(response.data[0], response.data[1])

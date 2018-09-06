@@ -3,6 +3,7 @@ import styled from 'styled-components'
 import { Draggable } from 'react-beautiful-dnd'
 import axios from 'axios'
 import './Task.css'
+import apiUrl from './apiUrl'
 
 const Container = styled.div`
   padding: 8px;
@@ -18,7 +19,7 @@ const Container = styled.div`
 export default class Task extends React.Component {
 
   deleteBookmark = () => {
-    axios.delete('http://localhost:2999/bookmarks/' + this.props.task.id)
+    axios.delete(apiUrl + 'bookmarks/' + this.props.task.id)
     .then( response => {
       this.props.updateSession(response.data[0], response.data[1])
     })
@@ -41,7 +42,7 @@ export default class Task extends React.Component {
   toggleFinished = () => {
     
     const toggler = this.props.task.finished ? false : true
-    axios.put('http://localhost:2999/bookmarks/' + this.props.task.id, {id: this.props.task.id,index: this.props.index, finished: toggler} )
+    axios.put(apiUrl + '/bookmarks/' + this.props.task.id, {id: this.props.task.id,index: this.props.index, finished: toggler} )
       .then(
         response => {
           console.log(response)

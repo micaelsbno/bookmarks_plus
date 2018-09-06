@@ -5,6 +5,7 @@ import Signup from './Signup'
 import Bookmarks from './Bookmarks'
 import axios from 'axios'
 import './index.css'
+import apiUrl from './apiUrl'
 
 /*global chrome*/
 
@@ -25,7 +26,7 @@ class App extends React.Component {
   
   checkStorage = () => {
     if (!!localStorage.getItem('email')) {
-      axios.post('http://localhost:2999/sessions', {email: localStorage.getItem('email'), password: localStorage.getItem('password') })
+      axios.post(apiUrl + 'sessions', {email: localStorage.getItem('email'), password: localStorage.getItem('password') })
         .then(
           (response) => {
             if (response[0] !== 'error') {
@@ -69,7 +70,7 @@ class App extends React.Component {
           .sort( (a,b) => a - b)
           [0]
 
-        axios.post('http://localhost:2999/bookmarks', {url: activeTab.url,title: activeTab.title, folder: folder, user_id: this.state.user_id, index: lastIndex + 1 })
+        axios.post(apiUrl + 'bookmarks', {url: activeTab.url,title: activeTab.title, folder: folder, user_id: this.state.user_id, index: lastIndex + 1 })
         .then( response  => {
           if (response[0] !== 'error') {
             updateSession(response.data[0], response.data[1], response.data[2])
@@ -80,7 +81,7 @@ class App extends React.Component {
   }
 
   showAddPopup = () => {
-    axios.get('http://localhost:2999/bookmarks/', { params: {user_id: this.state.user_id } })
+    axios.get(apiUrl + 'bookmarks/', { params: {user_id: this.state.user_id } })
     .then( response => {
       const allFolders = []
       if (response[0] !== 'error') {
@@ -122,7 +123,7 @@ class App extends React.Component {
   }
 
   render() {
-    if (!!localStorage.getItem('email') && !this.userIsLoggedIn()) {
+    if (!!localStorage.getItem('email') && !this.userIsLoggedIn() && this.state.token !== 'error') {
       
       return <div>{this.checkStorage()}</div>
     
@@ -133,7 +134,7 @@ class App extends React.Component {
           <header><h1>Add Bookmark</h1><i className="fas fa-plus" onClick={this.showAddPopup}></i></header>
           <div className={this.state.form}>
             {this.state.folders.map(this.addBookmarkFolders)}
-            <form onSubmit={
+            <form className='new-folder__form' onSubmit={
                (event) => {
               event.preventDefault()
               this.addBookmark(this.state.bookmarkFolder)
