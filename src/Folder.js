@@ -6,10 +6,6 @@ import axios from 'axios'
 
 class Folder extends React.Component {
 
-  constructor(props) {
-    super(props)
-  }
-
   onDragEnd = result => {
     const {destination, source, draggableId } = result
 
@@ -30,18 +26,7 @@ class Folder extends React.Component {
     newTaskIds.splice(source.index, 1)
     newTaskIds.splice(destination.index, 0, draggableId)
 
-    const newColumn = {
-      ...column,
-      taskIds: newTaskIds
-    }
 
-    const newState = {
-      ...this.props.folders,
-      columns: {
-        ...this.props.folders.columns,
-        [newColumn.id]: newColumn,
-      }
-    }
     newTaskIds.forEach( (markId, index) => {
       axios.put('http://localhost:2999/bookmarks/' + markId, {markId, index, finished: this.props.folders.tasks[[markId]].finished})
       .then(

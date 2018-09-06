@@ -2,9 +2,6 @@ import React from 'react'
 import Folder from './Folder'
 
 export default class Bookmark extends React.Component{
-  constructor(props){
-    super(props)
-  }
   
   // rerun mountBookmarks
 

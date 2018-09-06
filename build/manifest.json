@@ -1,17 +1,20 @@
 {
-  "short_name": "mentorSelf",
-  "name": "mentorSelf bookmarks app",
-  // "icons": [
-  //   {
-  //     "src": "favicon.ico",
-  //     "sizes": "64x64 32x32 24x24 16x16",
-  //     "type": "image/x-icon"
-  //   }
-  // ],
   "version": "1.0",
-    "manifest_version": 2,
-    "browser_action": {
-        "default_popup": "index.html"
-    },
-  "permissions": ["bookmarks","tabs"]
+  "name": "BetterBookmarks+",
+  "description": "BetterBookmarks+",
+  "manifest_version": 2,
+  "permissions": ["bookmarks", "tabs"],
+  "browser_action": {
+    "default_popup": "index.html",
+    "default_icon": {
+      "16": "images/bb_icon16.png",
+      "32": "images/bb_icon32.png",
+      "48": "images/bb_icon48.png",
+      "128": "images/bb_icon128.png"
+    }
+  },
+  "start_url": "./index.html",
+  "display": "standalone",
+  "theme_color": "#000000",
+  "background_color": "#ffffff"
 }

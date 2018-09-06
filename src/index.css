@@ -7,3 +7,11 @@
   font-size: 0.8em;
   padding: 0 0 1.3em 2.8em;
 }
+
+.hidden {
+  display: none;
+}
+
+.show {
+  display: block
+}

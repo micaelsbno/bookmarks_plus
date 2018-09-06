@@ -16,10 +16,6 @@ const Container = styled.div`
 `
 
 export default class Task extends React.Component {
-  
-  constructor(props){
-    super(props)
-  }
 
   deleteBookmark = () => {
     axios.delete('http://localhost:2999/bookmarks/' + this.props.task.id, {})

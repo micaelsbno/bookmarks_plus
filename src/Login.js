@@ -1,6 +1,5 @@
 import React from 'react'
 import axios from 'axios'
-import Bookmarks from './Bookmarks'
 
 class Login extends React.Component{
   
@@ -19,8 +18,8 @@ class Login extends React.Component{
     axios.post('http://localhost:2999/sessions', { email, password })
     .then(
       (response)  => {
-        if (response[0] != 'error') {
-          this.props.updateSession(response.data[0], response.data[1])
+        if (response[0] !== 'error') {
+          this.props.updateSession(response.data[0], response.data[1], response.data[2])
         }
       }    
     )

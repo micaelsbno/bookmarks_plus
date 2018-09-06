@@ -23,7 +23,7 @@ export default class Signup extends React.Component {
     axios.post('http://localhost:2999/users', { email, password })
     .then(
       (response)  => {
-        if (!!response[0] != 'error') {
+        if (!!response[0] !== 'error') {
           this.props.updateSession(response.data[0], response.data[1])
         }
       }    
