@@ -2,16 +2,56 @@
   background-color: #F7F7F7;
 }
 
+h4 {
+  margin: 0;
+}
+
+.subhead {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.8em 2.1em;
+}
+
 .bookmarks__title {
   color: #B3B3B3;
   font-size: 0.8em;
-  padding: 0 0 1.3em 2.8em;
+}
+
+.bookmarks__title--red {
+  color: #FB132D;
+  font-size: 0.8em;
 }
 
 .hidden {
-  display: none;
+  height: 0;
+  width: 100%;
+  overflow: hidden;
+  transition: 0.3s all ease;
 }
 
 .show {
-  display: block
+  width: 100%;
+  min-height: 100px;
+  background-color: white;
+  margin: 8px;
+  padding: 1em;
+  transition: 0.3s all ease;
+  overflow: hidden;
+}
+
+input {
+  padding: 1em 1em;
+  border: 0;
+  background-color: #F7F7F7;
+  border-radius: 5px;
+}
+
+button {
+  background-color: #4CE28F;
+  border: 0;
+  padding: 1em 2em;
+  border-radius: 5px;
+  color: white;
+  margin-left: 0.3em;
 }

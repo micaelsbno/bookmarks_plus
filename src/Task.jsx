@@ -18,7 +18,7 @@ const Container = styled.div`
 export default class Task extends React.Component {
 
   deleteBookmark = () => {
-    axios.delete('http://localhost:2999/bookmarks/' + this.props.task.id, {})
+    axios.delete('http://localhost:2999/bookmarks/' + this.props.task.id)
     .then( response => {
       this.props.updateSession(response.data[0], response.data[1])
     })
