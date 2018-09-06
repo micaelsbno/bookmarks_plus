@@ -13,7 +13,7 @@
       "128": "images/bb_icon128.png"
     }
   },
-  "start_url": "./index.html",
+  "start_url": "index.html",
   "display": "standalone",
   "theme_color": "#000000",
   "background_color": "#ffffff"
