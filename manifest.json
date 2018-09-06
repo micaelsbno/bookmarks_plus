@@ -1,0 +1,20 @@
+{
+  "version": "1.0",
+  "name": "BetterBookmarks+",
+  "description": "BetterBookmarks+",
+  "manifest_version": 2,
+  "permissions": ["bookmarks", "tabs"],
+  "browser_action": {
+    "default_popup": "index.html",
+    "default_icon": {
+      "16": "images/bb_icon16.png",
+      "32": "images/bb_icon32.png",
+      "48": "images/bb_icon48.png",
+      "128": "images/bb_icon128.png"
+    }
+  },
+  "start_url": "./index.html",
+  "display": "standalone",
+  "theme_color": "#000000",
+  "background_color": "#ffffff"
+}
