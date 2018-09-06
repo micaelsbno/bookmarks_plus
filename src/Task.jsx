@@ -44,7 +44,8 @@ export default class Task extends React.Component {
     axios.put('http://localhost:2999/bookmarks/' + this.props.task.id, {id: this.props.task.id,index: this.props.index, finished: toggler} )
       .then(
         response => {
-          this.props.updateSession(response.data[0], response.data[1])
+          console.log(response)
+          this.props.updateSession(response.data[0], response.data[1], response.data[2])
       })
   }
   

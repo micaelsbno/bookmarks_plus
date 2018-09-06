@@ -21,7 +21,7 @@ class App extends React.Component {
     }
   }
 
-  updateSession = (token, bookmarks, user_id = this.props.user_id, form = this.props.form) => {
+  updateSession = (token, bookmarks, user_id = this.state.user_id, form = this.state.form) => {
     this.setState({ token, bookmarks, user_id,form: form})
   }
 
@@ -50,16 +50,14 @@ class App extends React.Component {
         .sort( (a,b) => a - b)
         [0]
 
-        
       axios.post('http://localhost:2999/bookmarks', {url: activeTab.url,title: activeTab.title, folder: folder, user_id: state.user_id, index: lastIndex + 1 })
       .then( response  => {
           if (response[0] !== 'error') {
-            updateSession(response.data[0], response.data[1], response.data[2], 'hidden')
+            updateSession(response.data[0], response.data[1], response.data[2])
           }
         }    
       )
     })
-
   }
 
   showAddPopup = () => {
@@ -70,6 +68,17 @@ class App extends React.Component {
         response.data.forEach( bookmark => {
           if (!allFolders.includes(bookmark.folder)){
             allFolders.push(bookmark.folder)
+        if (this.state.form === 'hidden') {
+          this.setState({
+            form: 'show',
+            folders: allFolders
+          })          
+        } else {
+          this.setState({
+            form: 'hidden',
+            folders: allFolders
+          })      
+        }
           }
         })
 
