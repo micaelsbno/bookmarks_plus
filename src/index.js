@@ -21,8 +21,8 @@ class App extends React.Component {
     }
   }
 
-  updateSession = (token, bookmarks, user_id) => {
-    this.setState({ token, bookmarks, user_id})
+  updateSession = (token, bookmarks, user_id = this.props.user_id, form = this.props.form) => {
+    this.setState({ token, bookmarks, user_id,form: form})
   }
 
   userIsLoggedIn = () => {
@@ -36,17 +36,33 @@ class App extends React.Component {
   }
 
   addBookmark = (folder) => {
-    console.log(folder)
-    const tabs = []
-    chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
-       var activeTab = tabs[0];
-       var activeTabId = activeTab.id;
-       tabs.push(tabs)
-    });
+
+    const state = this.state
+    const updateSession = this.updateSession
+
+    chrome.tabs.query({active: true, currentWindow: true}, (tabs) => {
+      var activeTab = tabs[0];
+      var activeTabId = activeTab.id;
+
+      const lastIndex = state.bookmarks
+        .filter( mark => mark.folder === folder)
+        .map( mark => mark.index)
+        .sort( (a,b) => a - b)
+        [0]
+
+        
+      axios.post('http://localhost:2999/bookmarks', {url: activeTab.url,title: activeTab.title, folder: folder, user_id: state.user_id, index: lastIndex + 1 })
+      .then( response  => {
+          if (response[0] !== 'error') {
+            updateSession(response.data[0], response.data[1], response.data[2], 'hidden')
+          }
+        }    
+      )
+    })
+
   }
 
   showAddPopup = () => {
-    console.log(this.state.user_id)
     axios.get('http://localhost:2999/bookmarks/', { params: {user_id: this.state.user_id } })
     .then( response => {
       if (response[0] !== 'error') {
@@ -56,10 +72,19 @@ class App extends React.Component {
             allFolders.push(bookmark.folder)
           }
         })
+
+        if (this.state.form === 'hidden') {
           this.setState({
             form: 'show',
             folders: allFolders
-          })
+          })          
+        } else {
+          this.setState({
+            form: 'hidden',
+            folders: allFolders
+          })      
+        }
+
         }
     })
   }

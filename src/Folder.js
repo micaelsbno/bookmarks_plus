@@ -41,7 +41,7 @@ class Folder extends React.Component {
     let { folders } = this.props
     return (
       <DragDropContext onDragEnd={this.onDragEnd}>
-      {folders.columnOrder.map(columnId => {
+      {folders.columnOrder.sort().map(columnId => {
         const column = folders.columns[columnId]
         const tasks = column.taskIds.map(taskId => folders.tasks[taskId])
 
