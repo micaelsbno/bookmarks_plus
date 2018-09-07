@@ -60,7 +60,7 @@ export default class Task extends React.Component {
           innerRef={provided.innerRef}
         >
           <div className='link__container'>
-            <a href={this.props.task.url} className={this.isLinkFinished()} >{this.props.task.content}</a>
+            <a href={this.props.task.url} target="_blank" className={this.isLinkFinished()} >{this.props.task.content}</a>
             <div className="link__aside">
               <i className="fas fa-times"  onClick={this.deleteBookmark}></i>
               <i className="fas fa-question"></i>
