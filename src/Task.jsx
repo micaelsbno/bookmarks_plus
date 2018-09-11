@@ -18,21 +18,28 @@ const Container = styled.div`
 
 export default class Task extends React.Component {
 
+  constructor(props) {
+    super(props)
+    this.state = this.props
+  }
+
   deleteBookmark = () => {
     axios.delete(apiUrl + 'bookmarks/' + this.props.task.id)
     .then( response => {
-      this.props.updateSession(response.data[0], response.data[1])
+      // this.props.updateSession(response.data[0], response.data[1])
     })
+    // let thisprops = this.props
+    this.props.deleteItem(this.props.task.id)
   }
 
   isLinkFinished = () => {
-    if (this.props.task.finished) {
+    if (this.state.task.finished) {
       return 'finished'
     }
   }
 
   isIconFinished = () => {
-    if (this.props.task.finished) {
+    if (this.state.task.finished) {
      return'fas fa-check finished'
     } else {
       return 'fas fa-check'
@@ -40,14 +47,18 @@ export default class Task extends React.Component {
   }
 
   toggleFinished = () => {
-    
-    const toggler = this.props.task.finished ? false : true
+    let state = this.state.task
+    const toggler = this.state.task.finished ? false : true
     axios.put(apiUrl + '/bookmarks/' + this.props.task.id, {id: this.props.task.id,index: this.props.index, finished: toggler} )
       .then(
         response => {
-          console.log(response)
-          this.props.updateSession(response.data[0], response.data[1], response.data[2])
+          // this.props.updateSession(response.data[0], response.data[1], response.data[2])
       })
+    
+    state.finished = toggler
+
+    this.setState(state)
+    
   }
   
   render() {
@@ -60,7 +71,7 @@ export default class Task extends React.Component {
           innerRef={provided.innerRef}
         >
           <div className='link__container'>
-            <a href={this.props.task.url} target="_blank" className={this.isLinkFinished()} >{this.props.task.content}</a>
+            <a href={this.state.task.url} target="_blank" className={this.isLinkFinished()} >{this.state.task.content}</a>
             <div className="link__aside">
               <i className="fas fa-times"  onClick={this.deleteBookmark}></i>
               <i className="fas fa-question"></i>

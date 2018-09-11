@@ -45,11 +45,9 @@ class App extends React.Component {
     bookmarkFolder = this.state.bookmarkFolder
   ) => { this.setState( { token, bookmarks, user_id,form: form } ) }
 
-  userIsLoggedIn = () => {
-    return this.state.token === 'token'
-  }
+  userIsLoggedIn = () => this.state.token === 'token'
   
-  goTo (link) {
+  goTo = (link) => {
     this.setState({
       page: link
     })

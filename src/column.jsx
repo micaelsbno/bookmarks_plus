@@ -19,7 +19,11 @@ const TaskList = styled.div`
 `
 
 export default class Column extends React.Component {
+  
+  state = this.props
+
   render(){
+    let state = this.props
     return (
       <Container>
         <Title><div className="pointer"></div>{this.props.column.title}</Title>
@@ -30,8 +34,8 @@ export default class Column extends React.Component {
             {...provided.droppableProps}
           >
         {/*sort this by index from the database*/}
-            {this.props.tasks.map((task,index) => (
-              <Task key={task.id} task={task} index={index} updateSession={this.props.updateSession} />
+            {this.props.tasks.filter(mark => mark !== undefined).map((task,index) => (
+              <Task key={task.id} task={task} index={index} deleteItem={this.props.deleteColumn} updateSession={this.props.updateSession} />
             ))}
             {provided.placeholder}
           </TaskList>
