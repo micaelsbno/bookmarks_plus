@@ -73,10 +73,6 @@ class Folder extends React.Component {
     this.setState(newState)
   }
 
-  // componentWillMount() {
-  //   this.setState(this.props.folders)
-  // }
-
   render() {
         
     const folders = this.state
