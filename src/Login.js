@@ -2,6 +2,7 @@ import React from 'react'
 import axios from 'axios'
 import './Login.css'
 import apiUrl from './apiUrl'
+import mountBookmarks from './helpers/mountBookmarks'
 
 class Login extends React.Component{
   
@@ -26,7 +27,8 @@ class Login extends React.Component{
     .then(
       (response) => {
         if (response[0] !== 'error') {
-          this.props.updateSession(response.data[0], response.data[1], response.data[2], 'hidden', [])
+          let folders = mountBookmarks(response.data[1])
+          this.props.updateSession(response.data[0], folders, response.data[2], 'hidden', [])
           this.storeSession()
         }
       }    

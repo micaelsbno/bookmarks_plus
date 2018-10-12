@@ -29,7 +29,7 @@ export default class Column extends React.Component {
             innerRef={provided.innerRef}
             {...provided.droppableProps}
           >
-        {/*sort this by index from the database*/}
+
             {this.props.tasks.map((task,index) => (
               <Task key={task.id} task={task} index={index} updateSession={this.props.updateSession} />
             ))}

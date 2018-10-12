@@ -1,48 +1,58 @@
-import React from 'react'
-import Folder from './Folder'
+import React from 'react';
+import '@atlaskit/css-reset'
+import { DragDropContext } from 'react-beautiful-dnd'
+import Column from './Column'
+import axios from 'axios'
+import apiUrl from './apiUrl'
+import mountBookmarks from './helpers/mountBookmarks'
 
-export default class Bookmark extends React.Component{
-  
-  // rerun mountBookmarks
+class Folder extends React.Component {
 
-  mountBookmarks = () => {
-    let { bookmarks } = this.props
-    const allBookmarks = {tasks: {}, columnOrder: [], columns: {}}
+  onDragEnd = result => {
+    const {destination, source, draggableId } = result
 
-    // this creates folders
-    bookmarks.forEach( bookmark => {
-      !allBookmarks.columnOrder.includes(bookmark.folder) ? allBookmarks.columnOrder.push(bookmark.folder) : ''
+    if (!destination){
+      return
+    }
+
+    if (
+      destination.droppableId === source.droppableId &&
+      destination.index === source.index
+      ) {
+      return
+    }
+    
+    const column = this.props.folders.columns[source.droppableId]
+    const newTaskIds = Array.from(column.taskIds)
+    
+    newTaskIds.splice(source.index, 1)
+    newTaskIds.splice(destination.index, 0, draggableId)
+
+    newTaskIds.forEach( (markId, index) => {
+      axios.put(apiUrl + 'bookmarks/' + markId, {markId, index, finished: this.props.folders.tasks[[markId]].finished})
+      .then(
+        response => {
+          let folders = mountBookmarks(response.data[1])
+          this.props.updateSession(response.data[0], folders)
+        })
     })
-
-    // this creates bookmarks
-    allBookmarks.columnOrder.forEach( bookmark => {
-      allBookmarks.columns[bookmark] = {
-        id: bookmark,
-        title: bookmark,
-        taskIds: bookmarks
-          .sort((markA, markB) => markA.index - markB.index)
-          .filter( mark => mark.folder === bookmark )
-          .map( mark => mark.id)
-      }
-    })
-
-    // this creates tasks
-    bookmarks.forEach( bookmark => {
-      allBookmarks.tasks[bookmark.id] = {
-        id: bookmark.id,
-        content: bookmark.title,
-        url: bookmark.url,
-        finished: bookmark.finished
-      }
-    })
-    return allBookmarks
+    
   }
 
   render() {
+    let { folders } = this.props
     return (
-      <div>
-        <Folder folders={this.mountBookmarks()} updateSession={this.props.updateSession} />
-      </div>
+      <DragDropContext onDragEnd={this.onDragEnd}>
+      {folders.columnOrder.sort().map(columnId => {
+        const column = folders.columns[columnId]
+        const tasks = column.taskIds.map(taskId => folders.tasks[taskId])
+
+        return <Column key={column.id} column={column} tasks={tasks} updateSession={this.props.updateSession} />
+      })}
+      </DragDropContext>
     )
   }
 }
+
+export default Folder
+

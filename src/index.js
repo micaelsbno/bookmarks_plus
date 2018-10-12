@@ -6,13 +6,13 @@ import Bookmarks from './Bookmarks'
 import axios from 'axios'
 import './index.css'
 import apiUrl from './apiUrl'
+import mountBookmarks from './helpers/mountBookmarks'
 
 /*global chrome*/
 
 class App extends React.Component {
   constructor(props) {
     super(props)
-    
     this.state = {
       token: '',
       bookmarks: [],
@@ -26,24 +26,27 @@ class App extends React.Component {
   
   checkStorage = () => {
     if (!!localStorage.getItem('email')) {
-      axios.post(apiUrl + 'sessions', {email: localStorage.getItem('email'), password: localStorage.getItem('password') })
-        .then(
-          (response) => {
-            if (response[0] !== 'error') {
-              this.updateSession(response.data[0], response.data[1], response.data[2])
-            }
-          }    
-        )
+      axios.post(
+        apiUrl + 'sessions', 
+        {email: localStorage.getItem('email'), 
+        password: localStorage.getItem('password')
+      })
+        .then( response => {
+          if (response[0] !== 'error') {
+            let folders = mountBookmarks(response.data[1])
+            this.updateSession(response.data[0], folders, response.data[2])
+          }
+        })
     }
   }
 
   updateSession = (
     token,
-    bookmarks = this.state.bookmarks,
+    folders = this.state.folders,
     user_id = this.state.user_id,
     form = this.state.form,
     bookmarkFolder = this.state.bookmarkFolder
-  ) => { this.setState( { token, bookmarks, user_id,form: form } ) }
+  ) => { this.setState( { token, folders, user_id,form: form } ) }
 
   userIsLoggedIn = () => {
     return this.state.token === 'token'
@@ -74,6 +77,7 @@ class App extends React.Component {
         .then( response  => {
           if (response[0] !== 'error') {
             updateSession(response.data[0], response.data[1], response.data[2])
+            this.setState({form: 'hidden'})
           }
         })
       })
@@ -103,7 +107,6 @@ class App extends React.Component {
           folders: allFolders
         })
       }
-
     })
   }
 
@@ -124,25 +127,34 @@ class App extends React.Component {
 
   renderBookmarks = () => (
     <div className='bookmarks'>
-      <header><h1>Add Bookmark</h1><i className="fas fa-plus" onClick={this.showAddPopup}></i></header>
-      <div className={this.state.form}>
-        {this.state.folders.map(this.addBookmarkFolders)}
-        <form className='new-folder__form' onSubmit={
-           (event) => {
-          event.preventDefault()
-          this.addBookmark(this.state.bookmarkFolder)
+      <header>
+        <h1>Add Bookmark</h1>
+        <i className="fas fa-plus" onClick={this.showAddPopup}></i>
+      </header>
+{/*      <div className={this.state.form}>
+        {this.state.folders.sort().map(this.addBookmarkFolders)}
+        <form 
+          className='new-folder__form' 
+          onSubmit={ event => {
+            event.preventDefault()
+            this.addBookmark(this.state.bookmarkFolder)
           }}
          action='/bookmarks' method='post' 
         >
-          <input type='text' placeholder='New Folder' type='text' name='bookmarkFolder' onChange={this.update} />
+          <input 
+            type='text' 
+            placeholder='New Folder' 
+            name='bookmarkFolder' 
+            onChange={this.update} 
+          />
           <button>Send</button>
         </form>
-      </div>
+      </div>*/}
       <div className="subhead">
         <h4 className='bookmarks__title'>BOOKMARKS</h4>
         <h4 className="bookmarks__title--red" onClick={this.logout}>LOGOUT</h4>
       </div>
-      <Bookmarks bookmarks={this.state.bookmarks} updateSession={this.updateSession}/>
+      <Bookmarks folders={this.state.folders} updateSession={this.updateSession}/>
     </div>
   ) 
 
