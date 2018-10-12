@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-import Task from './Task'
+import Bookmark from './Bookmark'
 import { Droppable } from 'react-beautiful-dnd'
 import './Column.css'
 
@@ -14,27 +14,27 @@ const Container = styled.div`
 const Title = styled.h3`
   padding: 8px;
 `
-const TaskList = styled.div`
+const BookmarkList = styled.div`
   padding: 8px;
 `
 
-export default class Column extends React.Component {
+export default class Folder extends React.Component {
   render(){
     return (
       <Container>
-        <Title><div className="pointer"></div>{this.props.column.title}</Title>
-        <Droppable droppableId={this.props.column.id}>
+        <Title><div className="pointer"></div>{this.props.folder.title}</Title>
+        <Droppable droppableId={this.props.folder.id}>
         {(provided) => (
-          <TaskList
+          <BookmarkList
             innerRef={provided.innerRef}
             {...provided.droppableProps}
           >
 
-            {this.props.tasks.map((task,index) => (
-              <Task key={task.id} task={task} index={index} updateSession={this.props.updateSession} />
+            {this.props.bookmarks.map((bookmark,index) => (
+              <Bookmark key={bookmark.id} bookmark={bookmark} index={index} updateSession={this.props.updateSession} />
             ))}
             {provided.placeholder}
-          </TaskList>
+          </BookmarkList>
         )}
         </Droppable>
       </Container>

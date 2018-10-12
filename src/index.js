@@ -2,7 +2,7 @@ import React from 'react'
 import ReactDOM from 'react-dom';
 import Login from './Login'
 import Signup from './Signup'
-import Bookmarks from './Bookmarks'
+import BookmarksContainer from './BookmarksContainer'
 import axios from 'axios'
 import './index.css'
 import apiUrl from './apiUrl'
@@ -154,7 +154,7 @@ class App extends React.Component {
         <h4 className='bookmarks__title'>BOOKMARKS</h4>
         <h4 className="bookmarks__title--red" onClick={this.logout}>LOGOUT</h4>
       </div>
-      <Bookmarks folders={this.state.folders} updateSession={this.updateSession}/>
+      <BookmarksContainer folders={this.state.folders} updateSession={this.updateSession}/>
     </div>
   ) 
 

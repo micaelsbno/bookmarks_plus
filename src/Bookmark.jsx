@@ -16,23 +16,23 @@ const Container = styled.div`
   }
 `
 
-export default class Task extends React.Component {
+export default class Bookmark extends React.Component {
 
   deleteBookmark = () => {
-    axios.delete(apiUrl + 'bookmarks/' + this.props.task.id)
+    axios.delete(apiUrl + 'bookmarks/' + this.props.bookmark.id)
     .then( response => {
       this.props.updateSession(response.data[0], response.data[1])
     })
   }
 
   isLinkFinished = () => {
-    if (this.props.task.finished) {
+    if (this.props.bookmark.finished) {
       return 'finished'
     }
   }
 
   isIconFinished = () => {
-    if (this.props.task.finished) {
+    if (this.props.bookmark.finished) {
      return'fas fa-check finished'
     } else {
       return 'fas fa-check'
@@ -41,18 +41,17 @@ export default class Task extends React.Component {
 
   toggleFinished = () => {
     
-    const toggler = this.props.task.finished ? false : true
-    axios.put(apiUrl + '/bookmarks/' + this.props.task.id, {id: this.props.task.id,index: this.props.index, finished: toggler} )
+    const toggler = this.props.bookmark.finished ? false : true
+    axios.put(apiUrl + '/bookmarks/' + this.props.bookmark.id, {id: this.props.bookmark.id,index: this.props.index, finished: toggler} )
       .then(
         response => {
-          console.log(response)
           this.props.updateSession(response.data[0], response.data[1], response.data[2])
       })
   }
   
   render() {
     return (
-      <Draggable draggableId={this.props.task.id} index={this.props.index}>
+      <Draggable draggableId={this.props.bookmark.id} index={this.props.index}>
       { (provided) => (
         <Container
           {...provided.draggableProps}
@@ -60,7 +59,7 @@ export default class Task extends React.Component {
           innerRef={provided.innerRef}
         >
           <div className='link__container'>
-            <a href={this.props.task.url} target="_blank" className={this.isLinkFinished()} >{this.props.task.content}</a>
+            <a href={this.props.bookmark.url} target="_blank" className={this.isLinkFinished()} >{this.props.bookmark.content}</a>
             <div className="link__aside">
               <i className="fas fa-times"  onClick={this.deleteBookmark}></i>
               <i className="fas fa-question"></i>

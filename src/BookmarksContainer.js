@@ -1,12 +1,12 @@
 import React from 'react';
 import '@atlaskit/css-reset'
 import { DragDropContext } from 'react-beautiful-dnd'
-import Column from './Column'
+import Folder from './Folder'
 import axios from 'axios'
 import apiUrl from './apiUrl'
 import mountBookmarks from './helpers/mountBookmarks'
 
-class Folder extends React.Component {
+class BookmarksContainer extends React.Component {
 
   onDragEnd = result => {
     const {destination, source, draggableId } = result
@@ -22,8 +22,8 @@ class Folder extends React.Component {
       return
     }
     
-    const column = this.props.folders.columns[source.droppableId]
-    const newTaskIds = Array.from(column.taskIds)
+    const folder = this.props.folders.folders[source.droppableId]
+    const newTaskIds = Array.from(folder.taskIds)
     
     newTaskIds.splice(source.index, 1)
     newTaskIds.splice(destination.index, 0, draggableId)
@@ -43,16 +43,15 @@ class Folder extends React.Component {
     let { folders } = this.props
     return (
       <DragDropContext onDragEnd={this.onDragEnd}>
-      {folders.columnOrder.sort().map(columnId => {
-        const column = folders.columns[columnId]
-        const tasks = column.taskIds.map(taskId => folders.tasks[taskId])
-
-        return <Column key={column.id} column={column} tasks={tasks} updateSession={this.props.updateSession} />
+      {folders.folderOrder.sort().map(folderId => {
+        const folder = folders.folders[folderId]
+        const bookmarks = folder.bookmarkIds.map(bookmarkId => folders.bookmarks[bookmarkId])
+        return <Folder key={folder.id} folder={folder} bookmarks={bookmarks} updateSession={this.props.updateSession} />
       })}
       </DragDropContext>
     )
   }
 }
 
-export default Folder
+export default BookmarksContainer
 

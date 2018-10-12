@@ -1,27 +1,26 @@
-const mountBookmarks = (bookmarks) => {
+const mountBookmarks = (data) => {
+    const allBookmarks = {bookmarks: {}, folderOrder: [], folders: {}}
 
-    const allBookmarks = {tasks: {}, columnOrder: [], columns: {}}
-
-    // this creates folders
-    bookmarks.forEach( bookmark => {
-      !allBookmarks.columnOrder.includes(bookmark.folder) ? allBookmarks.columnOrder.push(bookmark.folder) : ''
+    // this creates folder order
+    data.forEach( bookmark => {
+      !allBookmarks.folderOrder.includes(bookmark.folder) ? allBookmarks.folderOrder.push(bookmark.folder) : ''
     })
 
-    // this creates bookmarks
-    allBookmarks.columnOrder.forEach( bookmark => {
-      allBookmarks.columns[bookmark] = {
+    // this creates bookmarks order
+    allBookmarks.folderOrder.forEach( bookmark => {
+      allBookmarks.folders[bookmark] = {
         id: bookmark,
         title: bookmark,
-        taskIds: bookmarks
+        bookmarkIds: data
           .sort((markA, markB) => markA.index - markB.index)
           .filter( mark => mark.folder === bookmark )
           .map( mark => mark.id)
       }
     })
 
-    // this creates tasks
-    bookmarks.forEach( bookmark => {
-      allBookmarks.tasks[bookmark.id] = {
+    // this creates bookmarks
+    data.forEach( bookmark => {
+      allBookmarks.bookmarks[bookmark.id] = {
         id: bookmark.id,
         content: bookmark.title,
         url: bookmark.url,
