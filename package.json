@@ -24,6 +24,7 @@
     "deploy": "gh-pages -d build"
   },
   "devDependencies": {
+    "connected-react-router": "^4.5.0",
     "gh-pages": "^1.2.0"
   }
 }

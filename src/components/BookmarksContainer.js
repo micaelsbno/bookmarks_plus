@@ -5,6 +5,13 @@ import Folder from './Folder'
 import axios from 'axios'
 import apiUrl from '../helpers/apiUrl'
 import mountBookmarks from '../helpers/mountBookmarks'
+import Login from './Login'
+
+import { history } from '../store'
+import { bindActionCreators } from 'redux'
+import { connect } from 'react-redux'
+import * as bookmarkActions from '../actions/bookmarkActions'
+import * as userActions from '../actions/userActions'
 
 class BookmarksContainer extends React.Component {
 
@@ -36,22 +43,43 @@ class BookmarksContainer extends React.Component {
           this.props.updateSession(response.data[0], folders)
         })
     })
-    
+  }
+
+  logout = () => {
+    localStorage.removeItem('email')
+    localStorage.removeItem('password')
+    this.props.logoutUser()
+    this.props.hideBookmarks()
   }
 
   render() {
-    let { folders } = this.props
-    return (
-      <DragDropContext onDragEnd={this.onDragEnd}>
-      {folders.folderOrder.sort().map(folderId => {
-        const folder = folders.folders[folderId]
-        const bookmarks = folder.bookmarkIds.map(bookmarkId => folders.bookmarks[bookmarkId])
-        return <Folder key={folder.id} folder={folder} bookmarks={bookmarks} updateSession={this.props.updateSession} />
-      })}
-      </DragDropContext>
-    )
+    if (!!this.props.user.token) {
+      let folders = this.props.location.state.bookmarks
+      return (
+        <div>
+          <button onClick={this.logout}>Logout</button> 
+          <DragDropContext onDragEnd={this.onDragEnd}>
+          {folders.folderOrder.sort().map(folderId => {
+            const folder = folders.folders[folderId]
+            const bookmarks = folder.bookmarkIds.map(bookmarkId => folders.bookmarks[bookmarkId])
+            return <Folder key={folder.id} folder={folder} bookmarks={bookmarks} updateSession={this.props.updateSession} />
+          })}
+          </DragDropContext>
+        </div>
+      )
+    } else {
+       return <Login />
+    }
   }
 }
 
-export default BookmarksContainer
+const mapStateToProps = state => ({
+  user: state.user,
+  bookmarks: state.bookmarks
+})
 
+const mapDispatchToProps = dispatch => {
+  return bindActionCreators({...userActions, ...bookmarkActions}, dispatch)
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(BookmarksContainer)
