@@ -1,8 +1,8 @@
 import React from 'react'
 import axios from 'axios'
-import './Login.css'
-import apiUrl from './apiUrl'
-import mountBookmarks from './helpers/mountBookmarks'
+import '../styles/Login.css'
+import apiUrl from '../helpers/apiUrl'
+import mountBookmarks from '../helpers/mountBookmarks'
 
 class Login extends React.Component{
   

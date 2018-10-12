@@ -2,7 +2,7 @@ import React from 'react'
 import styled from 'styled-components'
 import Bookmark from './Bookmark'
 import { Droppable } from 'react-beautiful-dnd'
-import './Column.css'
+import '../styles/Column.css'
 
 const Container = styled.div`
   margin: 8px;

@@ -3,8 +3,8 @@ import '@atlaskit/css-reset'
 import { DragDropContext } from 'react-beautiful-dnd'
 import Folder from './Folder'
 import axios from 'axios'
-import apiUrl from './apiUrl'
-import mountBookmarks from './helpers/mountBookmarks'
+import apiUrl from '../helpers/apiUrl'
+import mountBookmarks from '../helpers/mountBookmarks'
 
 class BookmarksContainer extends React.Component {
 

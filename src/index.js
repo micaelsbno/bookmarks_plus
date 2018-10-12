@@ -1,11 +1,11 @@
 import React from 'react'
 import ReactDOM from 'react-dom';
-import Login from './Login'
-import Signup from './Signup'
-import BookmarksContainer from './BookmarksContainer'
+import Login from './components/Login'
+import Signup from './components/Signup'
+import BookmarksContainer from './components/BookmarksContainer'
 import axios from 'axios'
-import './index.css'
-import apiUrl from './apiUrl'
+import './styles/index.css'
+import apiUrl from './helpers/apiUrl'
 import mountBookmarks from './helpers/mountBookmarks'
 
 /*global chrome*/

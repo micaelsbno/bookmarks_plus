@@ -2,8 +2,8 @@ import React from  'react'
 import styled from 'styled-components'
 import { Draggable } from 'react-beautiful-dnd'
 import axios from 'axios'
-import './Task.css'
-import apiUrl from './apiUrl'
+import '../styles/Task.css'
+import apiUrl from '../helpers/apiUrl'
 
 const Container = styled.div`
   padding: 8px;
