@@ -3,8 +3,10 @@ import axios from 'axios'
 import '../styles/Login.css'
 import apiUrl from '../helpers/apiUrl'
 import mountBookmarks from '../helpers/mountBookmarks'
+
 import { Redirect } from 'react-router'
 
+import BookmarksContainer from './BookmarksContainer'
 import { history } from '../store'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
@@ -18,7 +20,12 @@ class Login extends React.Component{
     localStorage.setItem('password', password)
   }
 
+  userHasSession = () => {
+    return !!localStorage.getItem('email')
+  }
+
   isUserLoggedIn = () => !!this.props.user.token
+  userHasBookmarks = () => !!this.props.bookmarks.bookmarks
 
   goToBookmarks = () => {
     history.push('/', {bookmarks: this.props.bookmarks, user: this.props.user})
@@ -32,45 +39,46 @@ class Login extends React.Component{
   }
 
   loginRequest = (email, password) => {
-    console.log('logging in...')
     axios.post(apiUrl + 'sessions', { email, password })
     .then(
       (response) => {
-        if (response[0] !== 'error') {
+        if (response.data[0] !== 'error') {          
           let token = response.data[0]
           let bookmarks = mountBookmarks(response.data[1])
           let userId = response.data[2]
           this.storeSession(email, password)
           this.props.showBookmarks(bookmarks)
           this.props.login(token, userId)
+        } else {
+          localStorage.clear()
+          console.log('wrong password')
         }
       }    
     )
   }
 
-  render() {
-    this.isUserLoggedIn() ? this.goToBookmarks() : 'renderLogin'
-    
-    !!localStorage.getItem('email') ? (
-      this.loginRequest(
-        localStorage.getItem('email'),
-        localStorage.getItem('password')
-      )
-    ) : (
-      'renderLogin'
-    )
+  loginFromLocalStorage = () => {
+    return <div>{this.loginRequest(localStorage.getItem('email'),localStorage.getItem('password'))}</div> 
+  }
 
-    return (
-      <div>
-        <h1 className='login__title' style={{marginTop: 2 + 'em'}}>Login</h1>
-        <form className='login__form' onSubmit={this.logInUser} action='/'method='post'>
-          <input ref='email' className='login__input'  type='text' placeholder='email' name='email' />
-          <input ref='password' className='login__input' type='password' placeholder='password' name='password' />
-          <button>Send</button>
-        </form>
-      </div>
-      ) 
+  render() {
+    if (this.isUserLoggedIn() && this.userHasBookmarks()) {
+      return (<div>{history.push('/', {bookmarks: this.props.bookmarks, user: this.props.user})}</div>)
+    } else if (this.userHasSession()) {
+        return this.loginFromLocalStorage()
+    } else {
+      return (
+        <div>
+          <h1 className='login__title' style={{marginTop: 2 + 'em'}}>Login</h1>
+          <form className='login__form' onSubmit={this.logInUser} action='/'method='post'>
+            <input ref='email' className='login__input'  type='text' placeholder='email' name='email' />
+            <input ref='password' className='login__input' type='password' placeholder='password' name='password' />
+            <button>Send</button>
+          </form>
+        </div>
+      )
     }
+  }
 }
 
 const mapStateToProps = state => ({
@@ -83,3 +91,4 @@ const mapDispatchToProps = dispatch => {
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Login)
+        

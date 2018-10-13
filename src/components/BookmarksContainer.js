@@ -53,8 +53,8 @@ class BookmarksContainer extends React.Component {
   }
 
   render() {
-    if (!!this.props.user.token) {
-      let folders = this.props.location.state.bookmarks
+    if (!!this.props.user.token && !!this.props.bookmarks.bookmarks) {
+        let folders = this.props.location.state.bookmarks
       return (
         <div>
           <button onClick={this.logout}>Logout</button> 
@@ -68,7 +68,7 @@ class BookmarksContainer extends React.Component {
         </div>
       )
     } else {
-       return <Login />
+       return (<div>{history.push('/login')}</div>)
     }
   }
 }
