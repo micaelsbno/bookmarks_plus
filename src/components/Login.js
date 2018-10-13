@@ -4,9 +4,6 @@ import '../styles/Login.css'
 import apiUrl from '../helpers/apiUrl'
 import mountBookmarks from '../helpers/mountBookmarks'
 
-import { Redirect } from 'react-router'
-
-import BookmarksContainer from './BookmarksContainer'
 import { history } from '../store'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
@@ -49,6 +46,7 @@ class Login extends React.Component{
           this.storeSession(email, password)
           this.props.showBookmarks(bookmarks)
           this.props.login(token, userId)
+          history.push('/')
         } else {
           localStorage.clear()
           console.log('wrong password')
@@ -61,12 +59,17 @@ class Login extends React.Component{
     return <div>{this.loginRequest(localStorage.getItem('email'),localStorage.getItem('password'))}</div> 
   }
 
-  render() {
+  componentWillMount = () => {
     if (this.isUserLoggedIn() && this.userHasBookmarks()) {
       return (<div>{history.push('/', {bookmarks: this.props.bookmarks, user: this.props.user})}</div>)
     } else if (this.userHasSession()) {
         return this.loginFromLocalStorage()
     } else {
+      this.render()
+    }
+  }
+
+  render() {
       return (
         <div>
           <h1 className='login__title' style={{marginTop: 2 + 'em'}}>Login</h1>
@@ -78,7 +81,6 @@ class Login extends React.Component{
         </div>
       )
     }
-  }
 }
 
 const mapStateToProps = state => ({

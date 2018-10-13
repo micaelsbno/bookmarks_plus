@@ -29,7 +29,6 @@ export default class Folder extends React.Component {
             innerRef={provided.innerRef}
             {...provided.droppableProps}
           >
-
             {this.props.bookmarks.map((bookmark,index) => (
               <Bookmark key={bookmark.id} bookmark={bookmark} index={index} updateSession={this.props.updateSession} />
             ))}

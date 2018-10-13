@@ -5,15 +5,6 @@ import apiUrl from '../helpers/apiUrl'
 
 export default class Signup extends React.Component {
 
-  constructor(props){
-    super(props)
-    this.state = {
-      email: '',
-      password: '',
-      bookmarks: []
-    }
-  }
-
   update = (event) => {
     const {name, value} = event.target
     this.setState({[name]: value})
@@ -44,7 +35,7 @@ export default class Signup extends React.Component {
       <h1 style={{marginTop: 2 + 'em'}}>Signup</h1>
       <form className='signup__form' onSubmit={this.createAccount}  action='/users' method='post'>
         <input className='signup__input' placeholder='email' type='text' name='email' onChange={this.update} />
-        <input className='signup__input' type='password' placeholder='password' type='text' name='password' onChange={this.update} />
+        <input className='signup__input' type='password' placeholder='password' name='password' onChange={this.update} />
         <button>Send</button>
       </form>
     </div>

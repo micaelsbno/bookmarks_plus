@@ -3,7 +3,8 @@ const mountBookmarks = (data) => {
 
     // this creates folder order
     data.forEach( bookmark => {
-      !allBookmarks.folderOrder.includes(bookmark.folder) ? allBookmarks.folderOrder.push(bookmark.folder) : ''
+      !allBookmarks.folderOrder.includes(bookmark.folder) &&
+      allBookmarks.folderOrder.push(bookmark.folder)
     })
 
     // this creates bookmarks order

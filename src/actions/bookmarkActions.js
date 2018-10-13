@@ -10,3 +10,14 @@ export const hideBookmarks = () => {
     type: 'HIDE_BOOKMARKS'
   }
 }
+
+export const dragBookmark = (result) => {
+  return {
+    type: 'DRAG_BOOKMARK',
+    result
+  }
+}
+
+export const toggleFinished = () => {
+  
+}

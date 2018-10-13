@@ -2,7 +2,7 @@ import React from 'react'
 
 import { Provider } from 'react-redux'
 import { ConnectedRouter } from 'connected-react-router'
-import { Route, Redirect } from 'react-router'
+import { Route } from 'react-router'
 
 import axios from 'axios'
 import { history, store } from './store'
@@ -13,12 +13,6 @@ import BookmarksContainer from './components/BookmarksContainer'
 
 import apiUrl from './helpers/apiUrl'
 import mountBookmarks from './helpers/mountBookmarks'
-
-import { bindActionCreators } from 'redux'
-import { connect } from 'react-redux'
-import * as bookmarkActions from './actions/bookmarkActions'
-import * as userActions from './actions/userActions'
-
 
 import './styles/index.css'
 
@@ -67,13 +61,11 @@ class App extends React.Component {
 
       chrome.tabs.query({active: true, currentWindow: true}, (tabs) => {
         var activeTab = tabs[0];
-        var activeTabId = activeTab.id;
 
         const lastIndex = state.bookmarks
           .filter( mark => mark.folder === folder)
           .map( mark => mark.index)
-          .sort( (a,b) => a - b)
-          [0]
+          .sort( (a,b) => a - b)[0]
 
         axios.post(apiUrl + 'bookmarks', {url: activeTab.url,title: activeTab.title, folder: folder, user_id: this.state.user_id, index: lastIndex + 1 })
         .then( response  => {

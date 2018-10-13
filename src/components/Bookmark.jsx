@@ -40,7 +40,6 @@ export default class Bookmark extends React.Component {
   }
 
   toggleFinished = () => {
-    
     const toggler = this.props.bookmark.finished ? false : true
     axios.put(apiUrl + '/bookmarks/' + this.props.bookmark.id, {id: this.props.bookmark.id,index: this.props.index, finished: toggler} )
       .then(
