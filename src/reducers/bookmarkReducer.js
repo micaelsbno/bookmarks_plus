@@ -40,11 +40,55 @@ const moveBookmark = (state = {}, action) => {
       axios.put(apiUrl + 'bookmarks/' + markId, { markId, index, finished: bookmarks[[markId]].finished})
       .then(response => {console.log('changed')})})
 
+    localStorage.setItem('bookmarks', JSON.stringify(newState))
     return newState
 
   } else {
     return state
   }
+}
+
+const toggleFinished = (state = {}, action) => {
+    let toggler = action.finished === 'finished' ? false : true
+    axios.put(apiUrl + '/bookmarks/' + action.id, {
+      id: action.id,
+      index: state.bookmarks[action.id].index, 
+      finished: toggler
+    })
+    .then(response => {console.log('toggled')})
+
+  let newState = {
+    ...state, 
+    bookmarks: {
+      ...state.bookmarks,
+      [action.id]: {
+        ...state.bookmarks[action.id],
+        finished: toggler
+      }
+    }
+  }
+  localStorage.setItem('bookmarks', JSON.stringify(newState))
+  return newState
+}
+
+const deleteBookmark = (state = {}, action) => {
+  axios.delete(apiUrl + 'bookmarks/' + action.id)
+  .then( response => {console.log('deleted')})
+   
+  let newState = {...state}
+  delete newState.bookmarks[action.id]
+  let folderId = action.folder.id
+  newState = {...newState,
+    folders: {
+      ...newState.folders,
+      [folderId]: {
+        ...newState.folders[folderId],
+          bookmarkIds: newState.folders[folderId].bookmarkIds.filter(id => id !== action.id )
+      }
+    }
+  }
+  localStorage.setItem('bookmarks', JSON.stringify(newState))
+  return newState
 }
 
 const bookmarkReducer = (state = {}, action) => {
@@ -57,6 +101,10 @@ const bookmarkReducer = (state = {}, action) => {
       return {}
     case 'DRAG_BOOKMARK':
       return (moveBookmark(state, action))
+    case 'TOGGLE_FINISHED':
+      return (toggleFinished(state, action))
+    case 'DELETE_BOOKMARK':
+      return (deleteBookmark(state, action))
     default:
       return state
   }

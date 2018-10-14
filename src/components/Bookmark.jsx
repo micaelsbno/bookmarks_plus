@@ -16,58 +16,59 @@ const Container = styled.div`
   }
 `
 
-export default class Bookmark extends React.Component {
+// export default class Bookmark extends React.Component {
 
-  deleteBookmark = () => {
-    axios.delete(apiUrl + 'bookmarks/' + this.props.bookmark.id)
-    .then( response => {
-      this.props.updateSession(response.data[0], response.data[1])
-    })
+//   // deleteBookmark = () => {
+//   //   axios.delete(apiUrl + 'bookmarks/' + this.props.bookmark.id)
+//   //   .then( response => {
+//   //     this.props.updateSession(response.data[0], response.data[1])
+//   //   })
+//   // }
+
+
+
+//   // toggleFinished = () => {
+//   //   const toggler = this.props.bookmark.finished ? false : true
+//   //   axios.put(apiUrl + '/bookmarks/' + this.props.bookmark.id, {id: this.props.bookmark.id,index: this.props.index, finished: toggler} )
+//   //     .then(
+//   //       response => {
+//   //         this.props.updateSession(response.data[0], response.data[1], response.data[2])
+//   //     })
+//   // }
+
+const Bookmark = (props) => {
+
+  const isLinkFinished = () => (
+    props.bookmark.finished ? 'finished' : 'not-finished'
+  )
+
+  const toggleFinished = () => {
+    props.toggleFinished(props.bookmark.id, isLinkFinished())
   }
 
-  isLinkFinished = () => {
-    if (this.props.bookmark.finished) {
-      return 'finished'
-    }
+  const deleteBookmark = () => {
+    props.deleteBookmark(props.bookmark.id, props.folder)
   }
 
-  isIconFinished = () => {
-    if (this.props.bookmark.finished) {
-     return'fas fa-check finished'
-    } else {
-      return 'fas fa-check'
-    }
-  }
-
-  toggleFinished = () => {
-    const toggler = this.props.bookmark.finished ? false : true
-    axios.put(apiUrl + '/bookmarks/' + this.props.bookmark.id, {id: this.props.bookmark.id,index: this.props.index, finished: toggler} )
-      .then(
-        response => {
-          this.props.updateSession(response.data[0], response.data[1], response.data[2])
-      })
-  }
-  
-  render() {
-    return (
-      <Draggable draggableId={this.props.bookmark.id} index={this.props.index}>
-      { (provided) => (
-        <Container
-          {...provided.draggableProps}
-          {...provided.dragHandleProps}
-          innerRef={provided.innerRef}
-        >
-          <div className='link__container'>
-            <a href={this.props.bookmark.url} target="_blank" className={this.isLinkFinished()} >{this.props.bookmark.content}</a>
-            <div className="link__aside">
-              <i className="fas fa-times"  onClick={this.deleteBookmark}></i>
-              <i className="fas fa-question"></i>
-              <i className={this.isIconFinished()} onClick={this.toggleFinished} ></i>
-            </div>
+  return (
+    <Draggable draggableId={props.bookmark.id} index={props.index}>
+    { (provided) => (
+      <Container
+        {...provided.draggableProps}
+        {...provided.dragHandleProps}
+        innerRef={provided.innerRef}
+      >
+        <div className='link__container'>
+          <a href={props.bookmark.url} target="_blank" className={isLinkFinished()} >{props.bookmark.content}</a>
+          <div className="link__aside">
+            <i className="fas fa-times"  onClick={deleteBookmark}></i>
+            <i className="fas fa-question"></i>
+            <i className={`fas fa-check ${isLinkFinished()}`} onClick={toggleFinished} ></i>
           </div>
-        </Container>
-      )}
-      </Draggable>
-    )
-  }
+        </div>
+      </Container>
+    )}
+    </Draggable>
+  )
 }
+export default Bookmark

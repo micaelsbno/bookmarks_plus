@@ -3,6 +3,7 @@ import '@atlaskit/css-reset'
 import { DragDropContext } from 'react-beautiful-dnd'
 import Folder from './Folder'
 
+import Login from './Login'
 import { history } from '../store'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
@@ -12,30 +13,28 @@ import * as userActions from '../actions/userActions'
 class BookmarksContainer extends React.Component {
 
   logout = () => {
-    localStorage.removeItem('email')
-    localStorage.removeItem('password')
+    localStorage.clear()
     this.props.logoutUser()
     this.props.hideBookmarks()
   }
 
   render() {
-    if (!!this.props.user.token && !!this.props.bookmarks) {
-      let folders = this.props.bookmarks
       return (
+        !!this.props.user.token && !!this.props.bookmarks ? ( 
         <div>
           <button onClick={this.logout}>Logout</button> 
           <DragDropContext onDragEnd={this.props.dragBookmark}>
-          {folders.folderOrder.sort().map(folderId => {
-            const folder = folders.folders[folderId]
-            const bookmarks = folder.bookmarkIds.map(bookmarkId => folders.bookmarks[bookmarkId])
+          {this.props.bookmarks.folderOrder.sort().map(folderId => {
+            const folder = this.props.bookmarks.folders[folderId]
+            const bookmarks = folder.bookmarkIds.map(bookmarkId => this.props.bookmarks.bookmarks[bookmarkId])
             return <Folder key={folder.id} {...this.props} folder={folder} bookmarks={bookmarks} />
           })}
           </DragDropContext>
         </div>
+        ) : (
+          <Login />
+        )
       )
-    } else {
-       return (<div>{history.push('/login')}</div>)
-    }
   }
 }
 

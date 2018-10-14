@@ -12,13 +12,14 @@ import * as userActions from '../actions/userActions'
 
 class Login extends React.Component{
 
-  storeSession = (email, password) => {
-    localStorage.setItem('email', email)
-    localStorage.setItem('password', password)
+  storeSession = (token, userId, bookmarks) => {
+    localStorage.setItem('token', token)
+    localStorage.setItem('userId', userId)
+    localStorage.setItem('bookmarks', JSON.stringify(bookmarks))
   }
 
   userHasSession = () => {
-    return !!localStorage.getItem('email')
+    return !!localStorage.getItem('token')
   }
 
   isUserLoggedIn = () => !!this.props.user.token
@@ -36,6 +37,7 @@ class Login extends React.Component{
   }
 
   loginRequest = (email, password) => {
+
     axios.post(apiUrl + 'sessions', { email, password })
     .then(
       (response) => {
@@ -43,7 +45,7 @@ class Login extends React.Component{
           let token = response.data[0]
           let bookmarks = mountBookmarks(response.data[1])
           let userId = response.data[2]
-          this.storeSession(email, password)
+          this.storeSession(token, userId, bookmarks)
           this.props.showBookmarks(bookmarks)
           this.props.login(token, userId)
           history.push('/')
@@ -56,7 +58,12 @@ class Login extends React.Component{
   }
 
   loginFromLocalStorage = () => {
-    return <div>{this.loginRequest(localStorage.getItem('email'),localStorage.getItem('password'))}</div> 
+    return <div>
+      {this.props.showBookmarks(JSON.parse(localStorage.getItem('bookmarks')))}
+      {this.props.login(localStorage.getItem('token'), localStorage.getItem('userId'))}
+    {/*check for changes here*/}
+      {history.push('/')}
+    </div> 
   }
 
   componentWillMount = () => {

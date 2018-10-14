@@ -30,7 +30,7 @@ export default class Folder extends React.Component {
             {...provided.droppableProps}
           >
             {this.props.bookmarks.map((bookmark,index) => (
-              <Bookmark key={bookmark.id} bookmark={bookmark} index={index} updateSession={this.props.updateSession} />
+              <Bookmark {...this.props} key={bookmark.id} bookmark={bookmark} index={index}  />
             ))}
             {provided.placeholder}
           </BookmarkList>
