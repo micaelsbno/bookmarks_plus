@@ -91,6 +91,12 @@ const deleteBookmark = (state = {}, action) => {
   return newState
 }
 
+const addBookmark = (state = {}, action) => {
+
+  debugger
+
+}
+
 const bookmarkReducer = (state = {}, action) => {
   switch (action.type) {
     case 'SHOW_BOOKMARKS':
@@ -105,6 +111,8 @@ const bookmarkReducer = (state = {}, action) => {
       return (toggleFinished(state, action))
     case 'DELETE_BOOKMARK':
       return (deleteBookmark(state, action))
+    case 'ADD_BOOKMARK':
+      return (addBookmark(state, action))
     default:
       return state
   }

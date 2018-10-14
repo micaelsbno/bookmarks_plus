@@ -16,26 +16,6 @@ const Container = styled.div`
   }
 `
 
-// export default class Bookmark extends React.Component {
-
-//   // deleteBookmark = () => {
-//   //   axios.delete(apiUrl + 'bookmarks/' + this.props.bookmark.id)
-//   //   .then( response => {
-//   //     this.props.updateSession(response.data[0], response.data[1])
-//   //   })
-//   // }
-
-
-
-//   // toggleFinished = () => {
-//   //   const toggler = this.props.bookmark.finished ? false : true
-//   //   axios.put(apiUrl + '/bookmarks/' + this.props.bookmark.id, {id: this.props.bookmark.id,index: this.props.index, finished: toggler} )
-//   //     .then(
-//   //       response => {
-//   //         this.props.updateSession(response.data[0], response.data[1], response.data[2])
-//   //     })
-//   // }
-
 const Bookmark = (props) => {
 
   const isLinkFinished = () => (

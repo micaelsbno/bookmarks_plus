@@ -4,6 +4,7 @@
   "private": true,
   "homepage": "http://micaelsbno.github.io/bookmarks_plus",
   "dependencies": {
+    "connected-react-router": "^4.5.0",
     "@atlaskit/css-reset": "^3.0.1",
     "axios": "^0.18.0",
     "i": "^0.3.6",
@@ -24,7 +25,6 @@
     "deploy": "gh-pages -d build"
   },
   "devDependencies": {
-    "connected-react-router": "^4.5.0",
     "gh-pages": "^1.2.0"
   }
 }

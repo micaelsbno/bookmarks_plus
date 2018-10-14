@@ -2,6 +2,7 @@ import React from 'react';
 import '@atlaskit/css-reset'
 import { DragDropContext } from 'react-beautiful-dnd'
 import Folder from './Folder'
+import AddBookmarkHeader from './AddBookmarkHeader'
 
 import Login from './Login'
 import { history } from '../store'
@@ -22,6 +23,7 @@ class BookmarksContainer extends React.Component {
       return (
         !!this.props.user.token && !!this.props.bookmarks ? ( 
         <div>
+          <AddBookmarkHeader {...this.props} />
           <button onClick={this.logout}>Logout</button> 
           <DragDropContext onDragEnd={this.props.dragBookmark}>
           {this.props.bookmarks.folderOrder.sort().map(folderId => {
