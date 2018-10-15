@@ -37,31 +37,27 @@ class Login extends React.Component{
   }
 
   loginRequest = (email, password) => {
-
     axios.post(apiUrl + 'sessions', { email, password })
-    .then(
-      (response) => {
-        if (response.data[0] !== 'error') {          
-          let token = response.data[0]
-          let bookmarks = mountBookmarks(response.data[1])
-          let userId = response.data[2]
-          this.storeSession(token, userId, bookmarks)
-          this.props.showBookmarks(bookmarks)
-          this.props.login(token, userId)
-          history.push('/')
-        } else {
-          localStorage.clear()
-          console.log('wrong password')
-        }
-      }    
-    )
+    .then((response) => {
+      if (response.data[0] !== 'error') {          
+        let token = response.data[0]
+        let bookmarks = mountBookmarks(response.data[1])
+        let userId = response.data[2]
+        this.storeSession(token, userId, bookmarks)
+        this.props.showBookmarks(bookmarks)
+        this.props.login(token, userId)
+        history.push('/')
+      } else {
+        localStorage.clear()
+        console.log('wrong password')
+      }
+    })
   }
 
   loginFromLocalStorage = () => {
     return <div>
       {this.props.showBookmarks(JSON.parse(localStorage.getItem('bookmarks')))}
       {this.props.login(localStorage.getItem('token'), localStorage.getItem('userId'))}
-    {/*check for changes here*/}
       {history.push('/')}
     </div> 
   }

@@ -25,6 +25,7 @@
     "deploy": "gh-pages -d build"
   },
   "devDependencies": {
+    "compression-webpack-plugin": "^2.0.0",
     "gh-pages": "^1.2.0"
   }
 }

@@ -12,8 +12,6 @@ import Signup from './components/Signup'
 import BookmarksContainer from './components/BookmarksContainer'
 
 import apiUrl from './helpers/apiUrl'
-import mountBookmarks from './helpers/mountBookmarks'
-
 import './styles/index.css'
 
 /*global chrome*/
@@ -31,10 +29,15 @@ class App extends React.Component {
         const lastIndex = state.bookmarks
           .filter( mark => mark.folder === folder)
           .map( mark => mark.index)
-          .sort( (a,b) => a - b)[0]
+          .sort((a,b) => a - b)[0]
 
-        axios.post(apiUrl + 'bookmarks', {url: activeTab.url,title: activeTab.title, folder: folder, user_id: this.state.user_id, index: lastIndex + 1 })
-        .then( response  => {
+        axios.post(apiUrl + 'bookmarks', {
+          url: activeTab.url,
+          title: activeTab.title, 
+          folder: folder, 
+          user_id: this.state.user_id, 
+          index: lastIndex + 1 })
+        .then(response  => {
           if (response[0] !== 'error') {
             updateSession(response.data[0], response.data[1], response.data[2])
             this.setState({form: 'hidden'})
@@ -46,7 +49,7 @@ class App extends React.Component {
 
   showAddPopup = () => {
     axios.get(apiUrl + 'bookmarks/', { params: {user_id: this.state.user_id } })
-    .then( response => {
+    .then(response => {
       const allFolders = []
       if (response[0] !== 'error') {
         response.data.forEach( bookmark => {

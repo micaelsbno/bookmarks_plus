@@ -5,7 +5,6 @@ import Folder from './Folder'
 import AddBookmarkHeader from './AddBookmarkHeader'
 
 import Login from './Login'
-import { history } from '../store'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import * as bookmarkActions from '../actions/bookmarkActions'

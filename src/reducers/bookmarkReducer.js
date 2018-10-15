@@ -73,7 +73,7 @@ const toggleFinished = (state = {}, action) => {
 
 const deleteBookmark = (state = {}, action) => {
   axios.delete(apiUrl + 'bookmarks/' + action.id)
-  .then( response => {console.log('deleted')})
+  .then(response => {console.log('deleted')})
    
   let newState = {...state}
   delete newState.bookmarks[action.id]
@@ -92,9 +92,7 @@ const deleteBookmark = (state = {}, action) => {
 }
 
 const addBookmark = (state = {}, action) => {
-
-  debugger
-
+  console.log('add bookmark')  
 }
 
 const bookmarkReducer = (state = {}, action) => {

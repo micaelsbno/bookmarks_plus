@@ -12,17 +12,14 @@ class AddBookmarkHeader extends React.Component {
   }
 
   addBookmark = (folder) => {
-    let tabs = chrome.tabs.query({active: true, currentWindow: true}, (tabs) => {console.log(tabs)
+    let tabs = chrome.tabs.query({active: true, currentWindow: true}, (tabs) => {
       return tabs
     })
-    debugger
-   // chrome.tabs.query({active: true, currentWindow: true}, (tabs) => {
-   //    var activeTab = tabs[0];
-   //    var activeTabId = activeTab.id;
 
-
-   //    this.props.addBookmark(folder, activeTab)
-   //  })
+   chrome.tabs.query({active: true, currentWindow: true}, (tabs) => {
+      var activeTab = tabs[0];
+      this.props.addBookmark(folder, activeTab)
+    })
     this.toggleForm()
   }
 
@@ -40,16 +37,16 @@ class AddBookmarkHeader extends React.Component {
   render () {
     return (
       <div className='bookmarks'>
-      <header><h1>Add Bookmark</h1><i className="fas fa-plus" onClick={this.toggleForm}></i></header>
-      <div className={this.state.form}>
-        {this.props.bookmarks.folderOrder.map(folder => {
-          return <div className="folder__selector" onClick={() => {this.addBookmark(folder)}}>{folder}</div>
-        })}
-      <form className='' onSubmit={this.createFolder}>
-        <input type="text" ref='folder-input' name='folder-input' />
-      <button>Send</button>
-      </form>
-      </div>
+        <header><h1>Add Bookmark</h1><i className="fas fa-plus" onClick={this.toggleForm}></i></header>
+        <div className={this.state.form}>
+          {this.props.bookmarks.folderOrder.map((folder, i) => {
+            return <div className="folder__selector" key={i} onClick={() => {this.addBookmark(folder)}}>{folder}</div>
+          })}
+          <form className='' onSubmit={this.createFolder}>
+            <input type="text" ref='folder-input' name='folder-input' />
+          <button>Send</button>
+          </form>
+        </div>
       </div>
     )     
   }
